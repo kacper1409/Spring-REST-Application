@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "000526f3-33ed-4d37-a24f-48dbfdb9ddd7",
+		"name": "TestRequests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/controller?nickname=iChomik",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/controller?nickname=!@#$%^&*()",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"controller"
+					],
+					"query": [
+						{
+							"key": "nickname",
+							"value": "!@"
+						}
+					],
+					"hash": "$%^&*()"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/controller?nickname=!@#$%^&*()",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/controller?nickname=!@#$%^&*()",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"controller"
+					],
+					"query": [
+						{
+							"key": "nickname",
+							"value": "!@"
+						}
+					],
+					"hash": "$%^&*()"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.worldoftanks.eu/wot/account/achievements/?application_id=1862e24b5e7c7f7afc2914ada61df56d&account_id=503114792",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.worldoftanks.eu/wot/account/achievements/?application_id=1862e24b5e7c7f7afc2914ada61df56d&account_id=503114792",
+					"protocol": "https",
+					"host": [
+						"api",
+						"worldoftanks",
+						"eu"
+					],
+					"path": [
+						"wot",
+						"account",
+						"achievements",
+						""
+					],
+					"query": [
+						{
+							"key": "application_id",
+							"value": "1862e24b5e7c7f7afc2914ada61df56d"
+						},
+						{
+							"key": "account_id",
+							"value": "503114792"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.worldoftanks.eu/wot/account/info/?application_id=1862e24b5e7c7f7afc2914ada61df56d&account_id=503114792",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.worldoftanks.eu/wot/account/info/?application_id=1862e24b5e7c7f7afc2914ada61df56d&account_id=503114792",
+					"protocol": "https",
+					"host": [
+						"api",
+						"worldoftanks",
+						"eu"
+					],
+					"path": [
+						"wot",
+						"account",
+						"info",
+						""
+					],
+					"query": [
+						{
+							"key": "application_id",
+							"value": "1862e24b5e7c7f7afc2914ada61df56d"
+						},
+						{
+							"key": "account_id",
+							"value": "503114792"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
