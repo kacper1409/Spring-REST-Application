@@ -43,6 +43,7 @@ public class WOTApiService {
         return CompletableFuture.completedFuture(achievements);
     }
 
+    @Async("asyncExecutor")
     public CompletableFuture<String> getPersonalData(String accountId) {
         StringBuilder stringBuilder = new StringBuilder()
                 .append("https://api.worldoftanks.eu/wot/account/info/?application_id=1862e24b5e7c7f7afc2914ada61df56d")

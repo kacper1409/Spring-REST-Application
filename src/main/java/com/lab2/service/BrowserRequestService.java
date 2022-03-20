@@ -8,6 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -15,9 +18,10 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class BrowserRequestService {
 
-    public static final String sniperAchievement = "sniper";
-    public static final String supporterAchievement = "supporter";
-    public static final String defenderAchievement = "defender";
+    public static final String SNIPER_ACHIEVEMENT = "sniper";
+    public static final String SUPPORTER_ACHIEVEMENT = "supporter";
+    public static final String DEFENDER_ACHIEVEMENT = "defender";
+    private static final String ERROR_MESSAGE = "Blad pobierania danych";
 
     private final WOTApiService wotApiService;
 
@@ -33,22 +37,45 @@ public class BrowserRequestService {
             AchievementDto achievementDto = retrieveAchievementsFromJSON(achievements.get(), accountId);
             PersonalDataDto personalDataDto = retrievePersonalDataFromJSON(personalData.get(), accountId);
 
-            return getHTMLTemplate(achievementDto, personalDataDto);
+            return prepareHTMLTemplate(achievementDto, personalDataDto);
         } catch (Exception e) {
             log.info(e.getMessage(), e);
+            return ERROR_MESSAGE;
         }
-        return "";
     }
 
-    private String getHTMLTemplate(AchievementDto achievementDto, PersonalDataDto personalDataDto) {
+    private String prepareHTMLTemplate(AchievementDto achievementDto, PersonalDataDto personalDataDto) throws ParseException {
+
+        int numberOfSniper = achievementDto.getNumberOfSniper();
+        int numberOfSupporter = achievementDto.getNumberOfSupporter();
+        int numberOfDefender = achievementDto.getNumberOfDefender();
+
+        int age = getAccountAge(personalDataDto.getCreatedAt());
+
+        float average = (float)(numberOfSniper + numberOfSupporter + numberOfDefender) / (float)age;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String parsedDate = format.format(personalDataDto.getCreatedAt());
+
         StringBuilder stringBuilder = new StringBuilder()
                 .append("<h1>Rezultat:</h1>")
-                .append("<h2>Konto zalozono: " + personalDataDto.getCreatedAt() + "</h2>")
-                .append("<h2>Ocena osobista: " + personalDataDto.getGlobalRating() + "</h2>");
-
+                .append("<h2>Konto zalozono: "          + parsedDate                        + "</h2>")
+                .append("<h2>Ocena osobista: "          + personalDataDto.getGlobalRating() + "</h2>")
+                .append("<h2>Ilosc odznaki sniper: "    + numberOfSniper                    + "</h2>")
+                .append("<h2>Ilosc odznaki supporter: " + numberOfSupporter                 + "</h2>")
+                .append("<h2>Ilosc odznaki defender: "  + numberOfDefender                  + "</h2>")
+                .append("<h2>Srednia odznak na rok: "   + average                           + "</h2>");
 
         return stringBuilder.toString();
     }
+
+    private int getAccountAge(Date createdAt) {
+        Date today = new Date();
+        return today.getYear() - createdAt.getYear();
+    }
+
+
+    /** JSON HANDLING METHODS **/
 
     private String retrieveAccountIdFromJSON(String json) {
         JSONObject obj = new JSONObject(json);
@@ -70,9 +97,9 @@ public class BrowserRequestService {
     private AchievementDto retrieveAchievementsFromJSON(String json, String accountId) {
         JSONObject data = retrieveDataFromJSON(json, accountId);
 
-        int numberOfSniper = data.getJSONObject("achievements").getInt(sniperAchievement);
-        int numberOfSupporter = data.getJSONObject("achievements").getInt(supporterAchievement);
-        int numberOfDefender = data.getJSONObject("achievements").getInt(defenderAchievement);
+        int numberOfSniper = data.getJSONObject("achievements").getInt(SNIPER_ACHIEVEMENT);
+        int numberOfSupporter = data.getJSONObject("achievements").getInt(SUPPORTER_ACHIEVEMENT);
+        int numberOfDefender = data.getJSONObject("achievements").getInt(DEFENDER_ACHIEVEMENT);
 
         return new AchievementDto(numberOfSniper, numberOfSupporter, numberOfDefender);
     }
